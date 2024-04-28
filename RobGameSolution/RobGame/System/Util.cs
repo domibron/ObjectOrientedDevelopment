@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace System
 {
-    public class Util
+    public static class Util
     {
-        public static void Write(string text, ConsoleColor color)
+        public static void WriteColour(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(text);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static void WriteLine(string text, ConsoleColor color)
+        public static void WriteLineColour(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);
@@ -30,12 +30,12 @@ namespace System
                 object color;
                 if (Enum.TryParse(typeof(ConsoleColor), Enum.GetName(typeof(ConsoleColor), colorInt), out color))
                 {
-                    Write(ScreenDraw.Pixel, (ConsoleColor)color);
+                    WriteColour(ScreenDraw.Pixel, (ConsoleColor)color);
                     return true;
                 }
                 else
                 {
-                    Write(ScreenDraw.ErrorPixel, ConsoleColor.Red);
+                    WriteColour(ScreenDraw.ErrorPixel, ConsoleColor.Red);
                     return false;
                 }
             }
@@ -55,7 +55,7 @@ namespace System
                 // move the corsor back to it's original position.
                 Console.SetCursorPosition(cursorX, cursorY);
 
-                Write(ScreenDraw.Pixel, colour);
+                WriteColour(ScreenDraw.Pixel, colour);
 
                 return true;
             }
@@ -73,14 +73,52 @@ namespace System
                 // move the corsor back to it's original position.
                 Console.SetCursorPosition(cursorX, cursorY);
 
-                Write(ScreenDraw.Pixel, colour);
+                WriteColour(ScreenDraw.Pixel, colour);
 
                 return true;
             }
             else
             {
-                Write(ScreenDraw.ErrorPixel, ConsoleColor.Red);
+                WriteColour(ScreenDraw.ErrorPixel, ConsoleColor.Red);
                 return false;
+            }
+        }
+
+        public static bool ValidateInput(string input, int minRange, int maxRange)
+        {
+            int value;
+
+            if (string.IsNullOrEmpty(input))
+            {
+                return false;
+            }
+
+            if (!Int32.TryParse(input, out value))
+            {
+                return false;
+            }
+
+            if (value < minRange || value > maxRange) 
+            { 
+                return false; 
+            }
+
+            return true;
+        }
+
+        public static int ConvertInput(string input)
+        {
+            int OutPut;
+
+            bool Result = int.TryParse(input, out OutPut);
+
+            if (Result)
+            {
+                return OutPut;
+            }
+            else
+            {
+                return -1;
             }
         }
     }

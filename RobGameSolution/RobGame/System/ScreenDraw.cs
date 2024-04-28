@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace System
 {
-    public class ScreenDraw
+    public static class ScreenDraw
     {
         public static string HalfPxiel = "█";
         public static string Pixel = "██";
         public static string ErrorPixel = "[]";
 
-        public static bool DrawScreen(int[,] array)
+        public static void Draw(int[,] array)
         {
             for(int y = 0; y < array.GetLength(0); y++)
             {
@@ -23,11 +23,9 @@ namespace System
 
                 Console.Write("\n");
             }
-
-            return true;
         }
 
-        public static bool DrawScreen(List<List<int>> list)
+        public static void Draw(List<List<int>> list)
         {
             for (int y = 0; y < list.Count; y++)
             {
@@ -38,10 +36,28 @@ namespace System
 
                 Console.Write("\n");
             }
-
-            return true;
         }
 
+        public static void DrawAt(int x, int y, string text, ConsoleColor colour)
+        {
+            (int left, int top) = Console.GetCursorPosition();
 
+            Console.SetCursorPosition(x, y);
+
+            Util.WriteColour(text, colour);
+
+            Console.SetCursorPosition(left, top);
+        }
+
+        public static void DrawAt(int x, int y, string text)
+        {
+            (int left, int top) = Console.GetCursorPosition();
+
+            Console.SetCursorPosition(x, y);
+
+            Console.Write(text);
+
+            Console.SetCursorPosition(left, top);
+        }
     }
 }
