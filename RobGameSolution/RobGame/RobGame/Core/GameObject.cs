@@ -4,27 +4,28 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static RobGame.Core.Vector2Util;
 
 namespace RobGame.Core
 {
     public class GameObject
     {
-        public Vector2 Position;
+        public Vector2Int Position;
         public Vector2 Direction;
 
         public GameObject()
         {
-            Position = Vector2.Zero;
+            Position = Vector2Int.Zero;
             Direction = Vector2.Zero;
         }
 
-        public GameObject(Vector2 position)
+        public GameObject(Vector2Int position)
         {
             Position = position;
             Direction = Vector2.Zero;
         }
 
-        public GameObject(Vector2 position, Vector2 direction)
+        public GameObject(Vector2Int position, Vector2 direction)
         {
             Position = position;
             Direction = direction;
