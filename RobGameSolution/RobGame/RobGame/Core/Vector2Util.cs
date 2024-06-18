@@ -8,7 +8,7 @@ namespace RobGame.Core
 {
     public class Vector2Util
     {
-        public struct Vector2Int 
+        public struct Vector2Int
         {
             public int X;
             public int Y;
