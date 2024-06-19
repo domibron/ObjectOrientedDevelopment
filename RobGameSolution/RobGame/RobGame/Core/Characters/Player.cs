@@ -5,7 +5,6 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using static RobGame.Core.Vector2Util;
 
 namespace RobGame.Core.Characters
 {
