@@ -15,27 +15,35 @@ namespace RobGame.Core
 
 		private Player _player = new Player();
 
-		private Dictionary<int, Guard> AllGuards = new Dictionary<int, Guard>();
+		private float GuardWaitTime = 1f;
+
+        private Dictionary<int, Guard> AllGuards = new Dictionary<int, Guard>();
 		private Dictionary<int, Coin> AllCoins = new Dictionary<int, Coin>();
 
 		private int CoinsRemaing = 0;
 
 		private bool _inGame = false;
 
-        private DateTime time1 = DateTime.Now;
-        private DateTime time2 = DateTime.Now;
+        private DateTime _time1 = DateTime.Now;
+        private DateTime _time2 = DateTime.Now;
 
-		float deltaTime = 0f;
+		private float _deltaTime = 0f;
 
-        public void LoadLevel(int[,] level)
+		private int[] _collidableObjects = new int[] { 1 };
+
+
+		public void LoadLevel(int[][,] levelData)
 		{
-			_currentGame = level;
+			_currentGame = levelData[0];
+
+			// call init function.
 
 			_inGame = true;
 
 			ScreenDraw.Draw(_currentGame);
 
-				GameLoop();
+			// This starts the game loop.
+			GameLoop();
 			
 		}
 
@@ -59,15 +67,23 @@ namespace RobGame.Core
 		private void GameLose()
 		{
 			// dunno
-		}
+
+			_inGame = false;
+
+        }
 
 		private void GameWin()
 		{
 			// dunno
-		}
+
+			_inGame = false;
+
+        }
 
 		private void GameLoop()
 		{
+			float GuardTickTimer = 0;
+
 
 			// This should be called per frame.
 			// Keep in mind that drawing per frame is not good and we must update each cell.
@@ -76,7 +92,7 @@ namespace RobGame.Core
 				// we update the delta time for counting for ticks.
 				CalcDeltaTime();
 
-
+				// this will pause the application.
                 ConsoleKey key = Input.GetControlInput();
 
 				Vector2Int direction = Vector2Int.Zero;
@@ -105,13 +121,77 @@ namespace RobGame.Core
 
 				if (moving)
 				{
-					if (CheckCollision(_player.Position, direction, new int[] { 0, 1 }))
+					if (CheckCollision(_player.Position, direction, _collidableObjects))
 					{
 						// dont move...
+						// cannot debug out
 					}
-				}
+					else if (CheckCollision(_player.Position, direction, new int[] { 3 }))
+					{
+						_player.Position += direction;
+						// we draw the new player position and remove the old player.
+
+						// we collect the coin.
+						int? coinID = GetCoinID(_player.Position);
+
+						if (coinID.HasValue) CollectCoin(coinID.Value);
+                    }
+                    else
+					{
+                        _player.Position += direction;
+                        // we draw the new player position and remove the old player.
+                    }
+                }
+
+				// move all the guards
+				// do time check.
+				if (GuardTickTimer <= 0)
+				{
+					MoveGuards();
+
+					GuardTickTimer = GuardWaitTime;
+                }
+				else
+				{
+                    GuardTickTimer -= _deltaTime;
+                }
+
+				// we dont do coin collision here.
+
+				// we need guard on player collision detection. We moved all the guards.
+				if (true) GameLose();
+				
+
+
+				if (CoinsRemaing <= 0) GameWin();
+
+				
+
 
 			}
+		}
+
+		private void MoveGuards()
+		{
+			foreach (Guard guard in AllGuards.Values)
+			{
+                // do goblidy gap
+				guard.MoveTick();
+
+            }
+		}
+
+		private int? GetCoinID(Vector2Int posOnGrid)
+		{
+			foreach (Coin coin in AllCoins.Values)
+			{
+				if (coin.Position == posOnGrid)
+				{
+					return coin.ID;
+				}
+			}
+
+			return null;
 		}
 
 		private bool CheckCollision(Vector2Int pos, Vector2Int direction, int[] collidables)
@@ -126,11 +206,11 @@ namespace RobGame.Core
 
 		private void CalcDeltaTime()
 		{
-            time2 = DateTime.Now;
-            deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
-            Console.WriteLine(deltaTime);  // *float* output {0,2493331}
-            Console.WriteLine(time2.Ticks - time1.Ticks); // *int* output {2493331}
-            time1 = time2;
+            _time2 = DateTime.Now;
+            _deltaTime = (_time2.Ticks - _time1.Ticks) / 10000000f;
+            Console.WriteLine(_deltaTime);  // *float* output {0,2493331}
+            Console.WriteLine(_time2.Ticks - _time1.Ticks); // *int* output {2493331}
+            _time1 = _time2;
         }
 	}
 }

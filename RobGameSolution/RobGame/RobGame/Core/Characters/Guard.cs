@@ -42,7 +42,34 @@ namespace RobGame.Core.Characters
 
         public void MoveTick()
         {
+            if (Position == Cords[CurrentCord])
+            {
+                MoveToNext();
+            }
 
+            Vector2Int HowMuchToMove = Position - Cords[CurrentCord];
+
+            // dont like that but ok.
+            ScreenDraw.DrawAt(Position.X, Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
+
+            if (HowMuchToMove.X > 0)
+            {
+                Position.X++;
+            }
+            else if (HowMuchToMove.X < 0)
+            {
+                Position.X--;
+            }
+            else if (HowMuchToMove.Y > 0)
+            {
+                Position.Y++;
+            }
+            else if (HowMuchToMove.Y < 0)
+            {
+                Position.Y--;
+            }
+
+            ScreenDraw.DrawAt(Position.X, Position.Y, ScreenDraw.Pixel, ConsoleColor.Red);
         }
     }
 }
