@@ -11,7 +11,7 @@ namespace RobGame.Core.Special
     // 1 - Wall.
     // 2 - Player Start and player.
     // 3 - Coin Spawn.
-    // 4 - Guard spawn and guard.
+    // 4 - Guard spawn and guard. // dont use in layer 0. Use in other layers.
     
     // Guard data:
     // 0 - Nothing.
@@ -21,21 +21,49 @@ namespace RobGame.Core.Special
     /// <summary>
     /// The data for the game that holds level data and guard positions.
     /// </summary>
-    ///
+    
     public static class Data
     {
+        public static Dictionary<int, ConsoleColor> ColourKeys = new Dictionary<int, ConsoleColor>()
+        {
+            {0, ConsoleColor.Black},
+            {1, ConsoleColor.White},
+            {2, ConsoleColor.Blue},
+            {3, ConsoleColor.Yellow},
+            {4, ConsoleColor.Red}
+        };
+
+
         // Example of the level data.
         public static readonly int[][,] Example = new int[][,]
         {
             new int[,] { // Level data
-                {0,0,0},
-                {0,0,0},
-                {0,0,0}
+                {1,1,1,1,1,1,1,1,1,1,1,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,0,0,0,0,0,0,0,0,0,1},
+                {1,0,3,0,0,0,0,0,0,0,0,1},
+                {1,2,0,0,0,0,0,0,0,0,0,1},
+                {1,1,1,1,1,1,1,1,1,1,1,1}
             },
             new int[,] { // Guard 1
-                {0,0,0},
-                {0,0,0},
-                {0,0,0}
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0,0,0,0}
             }
         };
 
