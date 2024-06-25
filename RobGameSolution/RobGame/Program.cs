@@ -1,10 +1,16 @@
-﻿namespace RobGame
+﻿using RobGame.Core;
+
+namespace RobGame
 {
     internal class Program
     {
+        
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            MainMenu mainMenu = new MainMenu();
+
+            mainMenu.Start();
         }
     }
 }

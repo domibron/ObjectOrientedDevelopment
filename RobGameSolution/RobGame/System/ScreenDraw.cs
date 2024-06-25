@@ -12,6 +12,19 @@ namespace System
         public static string Pixel = "██";
         public static string ErrorPixel = "[]";
 
+        public static void Draw(int[,] array, Dictionary<int, ConsoleColor> colourKeys)
+        {
+            for (int y = 0; y < array.GetLength(0); y++)
+            {
+                for (int x = 0; x < array.GetLength(1); x++)
+                {
+                    DrawAt(x, y, Pixel, colourKeys[array[y, x]]);
+                }
+
+                Console.Write("\n");
+            }
+        }
+
         public static void Draw(int[,] array)
         {
             for(int y = 0; y < array.GetLength(0); y++)
