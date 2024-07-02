@@ -18,13 +18,14 @@ namespace System
             {
                 for (int x = 0; x < array.GetLength(1); x++)
                 {
-                    DrawAt(x, y, Pixel, colourKeys[array[y, x]]);
+                    DrawAt(x*2, y, Pixel, colourKeys[array[y, x]]);
                 }
 
                 Console.Write("\n");
             }
         }
 
+        [Obsolete("This will use the old spacing")]
         public static void Draw(int[,] array)
         {
             for(int y = 0; y < array.GetLength(0); y++)
