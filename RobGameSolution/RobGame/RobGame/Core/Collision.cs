@@ -8,6 +8,7 @@ namespace RobGame.Core
 {
     public interface Collision
     {
+        
 
         public void OnCollision();
 
