@@ -78,7 +78,11 @@ namespace RobGame.Core
 
 		private void GameLose()
 		{
-			// cool stuff
+			Console.Clear();
+
+			ScreenDraw.Draw(Data.LoseScreen, new Dictionary<int, ConsoleColor> { { 0, ConsoleColor.Black }, { 1, ConsoleColor.Red } });
+
+			Thread.Sleep(2000);
 
 			_inGame = false;
 
@@ -86,7 +90,11 @@ namespace RobGame.Core
 
 		private void GameWin()
 		{
-            // cool stuff
+            Console.Clear();
+
+            ScreenDraw.Draw(Data.WinScreen, new Dictionary<int, ConsoleColor> { { 0, ConsoleColor.Black }, { 1, ConsoleColor.DarkYellow } });
+
+            Thread.Sleep(2000);
 
             _inGame = false;
 
@@ -105,7 +113,12 @@ namespace RobGame.Core
 				CalcDeltaTime();
 
 				// this will pause the application.
-                ConsoleKey key = Input.GetControlInput();
+				ConsoleKey key = ConsoleKey.None;
+
+                if (Console.KeyAvailable)
+				{
+                    key = Input.GetControlInput();
+				}
 
 				Vector2Int direction = Vector2Int.Zero;
 
@@ -128,6 +141,9 @@ namespace RobGame.Core
 					case ConsoleKey.D:
 						direction = Vector2Int.Right;
 						moving = true;
+						break;
+					case ConsoleKey.Escape: // want a way to exit out.
+						GameLose();
 						break;
                 }
 
@@ -194,16 +210,10 @@ namespace RobGame.Core
 				foreach (Coin coin in AllCoins.Values)
 				{
 					ScreenDraw.DrawAt(coin.Position.X * 2, coin.Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
-
-
-
-                    ScreenDraw.DrawAt(0, 13, coin.Position.ToString());
-                    ScreenDraw.DrawAt(0, 14, _player.Position.ToString() + " ");
-					Vector2Int test = Vector2Int.One + Vector2Int.One;
-
-                    ScreenDraw.DrawAt(0, 15, CoinsRemaing.ToString());
                 }
 
+				Console.SetCursorPosition(0, _currentGame.GetLength(0));
+				Console.Write("Remaining Coins: " + CoinsRemaing.ToString());
 
 				if (CoinsRemaing <= 0) GameWin();
 
