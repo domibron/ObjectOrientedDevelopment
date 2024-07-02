@@ -51,7 +51,7 @@ namespace RobGame.Core
 
                 if (convertedInput == -1) continue;
 
-                if (convertedInput == 2) Environment.Exit(0);
+                if (convertedInput == 2) Environment.Exit(2);
 
                 if (convertedInput == 1)
                 {
@@ -79,9 +79,12 @@ namespace RobGame.Core
                         if (convertedInput == 1)
                         {
                             _gameManager.LoadLevel(Data.Example);
+                            break;
                         }
                     }
                 }
+
+                Console.Clear();
             }
         }
     }

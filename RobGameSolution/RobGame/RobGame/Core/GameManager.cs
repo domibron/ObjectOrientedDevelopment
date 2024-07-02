@@ -37,15 +37,19 @@ namespace RobGame.Core
 
 		public void LoadLevel(int[][,] levelData)
 		{
+			_inGame = true;
+			
 			// we need to copy the data, not referance it.
 			_currentGame = levelData[0];
 
+			Console.Clear();
+
+			ScreenDraw.Draw(_currentGame, Data.ColourKeys);
+			
 			// call init function.
 			InitGame(levelData);
 
-			_inGame = true;
 
-			ScreenDraw.Draw(_currentGame, Data.ColourKeys);
 
 			// This starts the game loop.
 			GameLoop();
@@ -67,7 +71,10 @@ namespace RobGame.Core
 		{
 			AllCoins[id].Collect();
 			AllCoins.Remove(id);
-		}
+
+			CoinsRemaing--;
+
+        }
 
 		private void GameLose()
 		{
@@ -133,26 +140,27 @@ namespace RobGame.Core
 					}
 					else if (CheckCollision(_player.Position, direction, new int[] { 3 }))
 					{
-						ScreenDraw.DrawAt(_player.Position.X, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
+						ScreenDraw.DrawAt(_player.Position.X * 2, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
 
 						_player.Position += direction;
-                        // we draw the new player position and remove the old player.
+						// we draw the new player position and remove the old player.
 
-                        ScreenDraw.DrawAt(_player.Position.X, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Blue);
+						ScreenDraw.DrawAt(_player.Position.X * 2, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Blue);
 
-                        // we collect the coin.
-                        int? coinID = GetCoinID(_player.Position);
+						// we collect the coin.
+						int? coinID = GetCoinID(_player.Position);
 
 						if (coinID.HasValue) CollectCoin(coinID.Value);
-                    }
-                    else
+					}
+					else
 					{
-                        ScreenDraw.DrawAt(_player.Position.X, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
+                        ScreenDraw.DrawAt(_player.Position.X*2, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
 
                         _player.Position += direction;
                         // we draw the new player position and remove the old player.
 
-                        ScreenDraw.DrawAt(_player.Position.X, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Blue);
+                        ScreenDraw.DrawAt(_player.Position.X*2, _player.Position.Y, ScreenDraw.Pixel, ConsoleColor.Blue);
+
                     }
                 }
 
@@ -163,11 +171,11 @@ namespace RobGame.Core
 					MoveGuards();
 
 					GuardTickTimer = GuardWaitTime;
-                }
+				}
 				else
 				{
-                    GuardTickTimer -= _deltaTime;
-                }
+					GuardTickTimer -= _deltaTime;
+				}
 
 				// we dont do coin collision here.
 
@@ -177,18 +185,27 @@ namespace RobGame.Core
 				{
 					if (guard.Position == _player.Position)
 					{
+
 						GameLose();
 					}
 
+				}
+
+				foreach (Coin coin in AllCoins.Values)
+				{
+					ScreenDraw.DrawAt(coin.Position.X * 2, coin.Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
+
+
+
+                    ScreenDraw.DrawAt(0, 13, coin.Position.ToString());
+                    ScreenDraw.DrawAt(0, 14, _player.Position.ToString() + " ");
+					Vector2Int test = Vector2Int.One + Vector2Int.One;
+
+                    ScreenDraw.DrawAt(0, 15, CoinsRemaing.ToString());
                 }
-				
-				
 
 
 				if (CoinsRemaing <= 0) GameWin();
-
-				
-
 
 			}
 		}
@@ -223,15 +240,13 @@ namespace RobGame.Core
 			Vector2Int checkSqure = pos + direction;
 
 			// checks if we have the collision int and returns the result.
-			return collidables.Contains<int>(_currentGame[checkSqure.X, checkSqure.Y]);
+			return collidables.Contains<int>(_currentGame[checkSqure.Y, checkSqure.X]);
 		}
 
 		private void CalcDeltaTime()
 		{
             _time2 = DateTime.Now;
             _deltaTime = (_time2.Ticks - _time1.Ticks) / 10000000f;
-            Console.WriteLine(_deltaTime);  // *float* output {0,2493331}
-            Console.WriteLine(_time2.Ticks - _time1.Ticks); // *int* output {2493331}
             _time1 = _time2;
         }
 
@@ -241,6 +256,10 @@ namespace RobGame.Core
             AllGuards.Clear();
 			AllCoins.Clear();
 
+            CoinsRemaing = 0;
+
+            _time1 = DateTime.Now;
+			_time2 = DateTime.Now;
 
             for (int i = 0; i < GameData.Length; i++)
 			{
@@ -260,12 +279,14 @@ namespace RobGame.Core
 									break;
 								case 2:
 									_player = new Player(new Vector2Int(x, y), Vector2.Zero, GameData[0]);
-									break;
+                                    ScreenDraw.DrawAt(x * 2, y, ScreenDraw.Pixel, ConsoleColor.Blue);
+                                    break;
 								case 3:
-									AddCoin(new Coin(CoinsRemaing, new Vector2Int(y,x), Vector2.Zero));
-									break;
+									AddCoin(new Coin(CoinsRemaing + 1, new Vector2Int(x,y), Vector2.Zero));
+                                    ScreenDraw.DrawAt(x * 2, y, ScreenDraw.Pixel, ConsoleColor.Yellow);
+                                    break;
 								case 4:
-									// guard init
+									// guard init - no, its done.
 									break;
 							}
 						}
@@ -283,9 +304,11 @@ namespace RobGame.Core
                         {
                             if (GameData[i][y,x] == 1)
 							{
-                                guard.SetPos(new Vector2Int(x, y));
+                                guard.Position = new Vector2Int(x, y);
+                                _currentGame[y, x] = 4;
+                                ScreenDraw.DrawAt(x * 2, y, ScreenDraw.Pixel, ConsoleColor.Red);
                             }
-							else if (GameData[i][y, x] > 1)
+							else if (GameData[i][y, x] >= 1)
 							{
 								// we do cord num - 2 so we can save on organising the data.
                                 cords.Add(GameData[i][y, x] - 2, new Vector2Int(x, y));
@@ -293,8 +316,12 @@ namespace RobGame.Core
                         }
                     }
 
+					for (int w = 0; w < cords.Count; w++)
+					{
+						guard.AddCord(cords[w]);
+					}
                     
-
+					AddGuard(guard);
 
                 }
 			}

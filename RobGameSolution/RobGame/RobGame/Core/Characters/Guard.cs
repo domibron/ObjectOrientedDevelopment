@@ -13,8 +13,8 @@ namespace RobGame.Core.Characters
 
         public int[,] CurrentLevel;
 
-        private Dictionary<int, Vector2Int> Cords = new Dictionary<int, Vector2Int>();
-        private int CurrentCord = -1;
+        public Dictionary<int, Vector2Int> Cords = new Dictionary<int, Vector2Int>();
+        private int CurrentCord = 0;
 
         public Guard(Vector2Int pos, Vector2 rotation, int[,] currentLevel) : base(pos, rotation) {
             // WILL PASS REF AND NOT DATA. 
@@ -42,15 +42,29 @@ namespace RobGame.Core.Characters
 
         public void MoveTick()
         {
+            if (Cords.Count <= 0) { return; }
+
+
             if (Position == Cords[CurrentCord])
             {
                 MoveToNext();
             }
 
-            Vector2Int HowMuchToMove = Position - Cords[CurrentCord];
+            Vector2Int HowMuchToMove = Cords[CurrentCord] - Position;
 
-            if (CurrentLevel[Position.Y, Position.X] == 3) ScreenDraw.DrawAt(Position.X, Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
-            else ScreenDraw.DrawAt(Position.X, Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
+
+            if (CurrentLevel[Position.Y, Position.X] == 3)
+            {
+                ScreenDraw.DrawAt(Position.X * 2, Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
+
+            }
+            else
+            {
+                ScreenDraw.DrawAt(Position.X * 2, Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
+
+            }
+
+
 
             if (HowMuchToMove.X > 0)
             {
@@ -69,7 +83,9 @@ namespace RobGame.Core.Characters
                 Position.Y--;
             }
 
-            ScreenDraw.DrawAt(Position.X, Position.Y, ScreenDraw.Pixel, ConsoleColor.Red);
+
+            ScreenDraw.DrawAt(Position.X*2, Position.Y, ScreenDraw.Pixel, ConsoleColor.Red);
+
         }
     }
 }
