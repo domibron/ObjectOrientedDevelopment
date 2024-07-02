@@ -53,16 +53,10 @@ namespace RobGame.Core.Characters
             Vector2Int HowMuchToMove = Cords[CurrentCord] - Position;
 
 
-            if (CurrentLevel[Position.Y, Position.X] == 3)
-            {
-                ScreenDraw.DrawAt(Position.X * 2, Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
+            
+            ScreenDraw.DrawAt(Position.X * 2, Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
 
-            }
-            else
-            {
-                ScreenDraw.DrawAt(Position.X * 2, Position.Y, ScreenDraw.Pixel, ConsoleColor.Black);
-
-            }
+            
 
 
 
