@@ -16,7 +16,7 @@ namespace RobGame.Core
 
 		private Player _player = new Player();
 
-		private float GuardWaitTime = 1f;
+		private float GuardWaitTime = .7f;
 
         private Dictionary<int, Guard> AllGuards = new Dictionary<int, Guard>();
 		private Dictionary<int, Coin> AllCoins = new Dictionary<int, Coin>();
@@ -180,6 +180,8 @@ namespace RobGame.Core
                     }
                 }
 
+				bool guardsMoved = false;
+
 				// move all the guards
 				// do time check.
 				if (GuardTickTimer <= 0)
@@ -187,7 +189,10 @@ namespace RobGame.Core
 					MoveGuards();
 
 					GuardTickTimer = GuardWaitTime;
-				}
+
+					guardsMoved = true;
+
+                }
 				else
 				{
 					GuardTickTimer -= _deltaTime;
@@ -207,10 +212,35 @@ namespace RobGame.Core
 
 				}
 
-				foreach (Coin coin in AllCoins.Values)
+				if (guardsMoved || moving)
 				{
-					ScreenDraw.DrawAt(coin.Position.X * 2, coin.Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
-                }
+
+					foreach (Coin coin in AllCoins.Values)
+					{
+
+						bool isGuardInCoin = false;
+
+						foreach (Guard guard in AllGuards.Values)
+						{
+							if (guard.Position == coin.Position)
+							{
+								isGuardInCoin = true;
+
+                            }
+						}
+
+						if (isGuardInCoin)
+						{
+							ScreenDraw.DrawAt(coin.Position.X * 2, coin.Position.Y, ScreenDraw.Pixel, ConsoleColor.Red);
+						}
+						else
+						{
+                            ScreenDraw.DrawAt(coin.Position.X * 2, coin.Position.Y, ScreenDraw.Pixel, ConsoleColor.Yellow);
+                        }
+
+
+					}
+				}
 
 				Console.SetCursorPosition(0, _currentGame.GetLength(0));
 				Console.Write("Remaining Coins: " + CoinsRemaing.ToString());
@@ -316,12 +346,15 @@ namespace RobGame.Core
 							{
                                 guard.Position = new Vector2Int(x, y);
                                 _currentGame[y, x] = 4;
-                                ScreenDraw.DrawAt(x * 2, y, ScreenDraw.Pixel, ConsoleColor.Red);
+								ScreenDraw.DrawAt(x * 2, y, ScreenDraw.Pixel, ConsoleColor.Red);
+
+								// we do cord num - 1 so we can save on organising the data.
+                                cords.Add(GameData[i][y, x] - 1, new Vector2Int(x, y));
                             }
-							else if (GameData[i][y, x] >= 1)
+							else if (GameData[i][y, x] > 1)
 							{
-								// we do cord num - 2 so we can save on organising the data.
-                                cords.Add(GameData[i][y, x] - 2, new Vector2Int(x, y));
+								// we do cord num - 1 so we can save on organising the data.
+                                cords.Add(GameData[i][y, x] - 1, new Vector2Int(x, y));
                             }
                         }
                     }

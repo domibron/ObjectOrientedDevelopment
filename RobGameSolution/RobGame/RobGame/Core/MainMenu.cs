@@ -78,7 +78,19 @@ namespace RobGame.Core
 
                         if (convertedInput == 1)
                         {
-                            _gameManager.LoadLevel(Data.Example);
+                            _gameManager.LoadLevel(Data.Level1);
+                            break;
+                        }
+
+                        if (convertedInput == 2)
+                        {
+                            _gameManager.LoadLevel(Data.Level2);
+                            break;
+                        }
+
+                        if (convertedInput == 3)
+                        {
+                            _gameManager.LoadLevel(Data.Level3);
                             break;
                         }
                     }
