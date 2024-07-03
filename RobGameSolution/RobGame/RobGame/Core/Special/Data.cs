@@ -6,24 +6,27 @@ using System.Threading.Tasks;
 
 namespace RobGame.Core.Special
 {
-    // All the data:
-    // 0 - Nothing.
-    // 1 - Wall.
-    // 2 - Player Start and player.
-    // 3 - Coin.
-    // 4 - Guard. // dont use in layer 0. Use in other layers.
-    
-    // Guard data:
-    // 0 - Nothing.
-    // 1 - Guard spawn.
-    // 2 and up | 2+ - Guard cord.
-
     /// <summary>
     /// The data for the game that holds level data and guard positions.
+    ///
+    /// All the data:
+    /// 0 - Nothing.
+    /// 1 - Wall.
+    /// 2 - Player Start and player.
+    /// 3 - Coin.
+    /// 4 - Guard.
+    ///
+    /// Guard data:
+    /// 0 - Nothing.
+    /// 1 - Guard spawn.
+    /// 2 and up | 2+ - Guard cord.
     /// </summary>
-    
+
     public static class Data
     {
+        /// <summary>
+        /// The colours for any item. defults to white.
+        /// </summary>
         public static Dictionary<int, ConsoleColor> ColourKeys = new Dictionary<int, ConsoleColor>()
         {
             {0, ConsoleColor.Black},
@@ -34,7 +37,9 @@ namespace RobGame.Core.Special
         };
 
 
-        // Example of the level data. also level 1. yeah, i know, im very lazy.
+        /// <summary>
+        /// Level 1 data.
+        /// </summary>
         public static readonly int[][,] Level1 = new int[][,]
         {
             new int[,] { // Level data
@@ -67,6 +72,9 @@ namespace RobGame.Core.Special
             }
         };
 
+        /// <summary>
+        /// Level 2 data.
+        /// </summary>
         public static readonly int[][,] Level2 = new int[][,]
         {
             new int[,] { // Level data
@@ -113,6 +121,9 @@ namespace RobGame.Core.Special
             }
         };
 
+        /// <summary>
+        /// Level 3 data.
+        /// </summary>
         public static readonly int[][,] Level3 = new int[][,]
         {
             new int[,] { // Level data
@@ -187,6 +198,9 @@ namespace RobGame.Core.Special
             }
         };
 
+        /// <summary>
+        /// Example and empty data.
+        /// </summary>
         public static readonly int[][,] Example = new int[][,]
         {
             new int[,] { // Level data
@@ -224,7 +238,9 @@ namespace RobGame.Core.Special
 
 
 
-
+        /// <summary>
+        /// Lose screen for display.
+        /// </summary>
         public static readonly int[,] LoseScreen = new int[,]
         {
             {0,0,1,1,1,0,0,1,1,0,0,1,0,0,0,1,0,1,1,1,1,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1,1,1,0,1,1,1,0 },
@@ -234,6 +250,9 @@ namespace RobGame.Core.Special
             {0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,1,0,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,0,0,1,1,1,1,0,1,0,0,1 }
         };
 
+        /// <summary>
+        /// Win screen for display.
+        /// </summary>
         public static readonly int[,] WinScreen = new int[,]
         {
             {0,1,0,1,0,0,1,1,0,0,1,0,0,1,0,0,0,0,1,0,0,0,1,0,1,0,1,0,0,1},

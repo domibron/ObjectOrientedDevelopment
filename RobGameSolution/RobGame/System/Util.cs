@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace System
 {
+    /// <summary>
+    /// The Util class holds the functions that are usful.
+    /// </summary>
     public static class Util
     {
+        /// <summary>
+        /// Writes to the console with a given colour.
+        /// </summary>
+        /// <param name="text">Text to display.</param>
+        /// <param name="color">The colour of the text.</param>
         public static void WriteColour(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -16,6 +24,11 @@ namespace System
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        /// <summary>
+        /// Writes to the console with a new line and a given colour.
+        /// </summary>
+        /// <param name="text">Text to display.</param>
+        /// <param name="color">The colour of the text.</param>
         public static void WriteLineColour(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
@@ -23,6 +36,11 @@ namespace System
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        /// <summary>
+        /// Draws the pixel and colours it with the given int.
+        /// </summary>
+        /// <param name="colorInt">The int colour of the console color enum</param>
+        /// <returns>bool</returns>
         public static bool DrawPixel(int colorInt)
         {
             if (colorInt >= 0)
@@ -84,6 +102,13 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Validates the input given with the number range.
+        /// </summary>
+        /// <param name="input">Input from the player.</param>
+        /// <param name="minRange">Min number.</param>
+        /// <param name="maxRange">Man number.</param>
+        /// <returns>bool</returns>
         public static bool ValidateInput(string input, int minRange, int maxRange)
         {
             int value;
@@ -106,6 +131,11 @@ namespace System
             return true;
         }
 
+        /// <summary>
+        /// Converts the input into a int.
+        /// </summary>
+        /// <param name="input">The input from the playe.</param>
+        /// <returns>int</returns>
         public static int ConvertInput(string input)
         {
             int OutPut;
