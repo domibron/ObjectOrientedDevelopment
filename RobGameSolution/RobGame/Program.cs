@@ -8,8 +8,10 @@ namespace RobGame
 
         static void Main(string[] args)
         {
+            // creates a main menu.
             MainMenu mainMenu = new MainMenu();
 
+            // and starts it.
             mainMenu.Start();
         }
     }
